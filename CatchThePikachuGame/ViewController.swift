@@ -23,7 +23,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var pika9: UIImageView!
     
     var score = 0
-    
+    var count = 0
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +60,12 @@ class ViewController: UIViewController {
         pika7.addGestureRecognizer(recognizer7)
         pika8.addGestureRecognizer(recognizer8)
         pika9.addGestureRecognizer(recognizer9)
-
+        
+        count = 10
+        timeLabel.text = String(count)
+        
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
+        
     }
     
     @objc func increaseScore(){
@@ -67,5 +73,22 @@ class ViewController: UIViewController {
         scoreLabel.text = "Score: \(score)"
     }
 
+    @objc func countDown(){
+        count -= 1
+        timeLabel.text = String(count)
+        
+        if count == 0 {
+            timer.invalidate()
+            
+            let alert = UIAlertController(title: "Time is Up", message: "Do you want to play again?", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "OK", style: .cancel)
+            let replayButton = UIAlertAction(title: "Replay", style: .default) { UIAlertAction in
+                 
+            }
+            alert.addAction(okButton)
+            alert.addAction(replayButton)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
