@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     var score = 0
     var count = 0
     var timer = Timer()
+    var pikachuArray = [UIImageView]()
+    var hideTimer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +63,25 @@ class ViewController: UIViewController {
         pika8.addGestureRecognizer(recognizer8)
         pika9.addGestureRecognizer(recognizer9)
         
+        pikachuArray = [
+            pika1,
+            pika2,
+            pika3,
+            pika4,
+            pika5,
+            pika6,
+            pika7,
+            pika8,
+            pika9
+        ]
+        
         count = 10
         timeLabel.text = String(count)
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
+        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hidePikachu), userInfo: nil, repeats: true)
+        
+        hidePikachu()
         
     }
     
@@ -79,6 +96,11 @@ class ViewController: UIViewController {
         
         if count == 0 {
             timer.invalidate()
+            hideTimer.invalidate()
+            
+            for pika in pikachuArray{
+                pika.isHidden = true
+            }
             
             let alert = UIAlertController(title: "Time is Up", message: "Do you want to play again?", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "OK", style: .cancel)
@@ -90,5 +112,15 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    @objc func hidePikachu(){
+        for pika in pikachuArray{
+            pika.isHidden = true
+        }
+        let random = Int(arc4random_uniform(UInt32(pikachuArray.count - 1)))
+        pikachuArray[random].isHidden = false
+    }
+    
+    
 }
 
