@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var pika9: UIImageView!
     
     var score = 0
+    var highScore = 0
     var count = 0
     var timer = Timer()
     var pikachuArray = [UIImageView]()
@@ -32,6 +33,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         scoreLabel.text = "Score: \(score)"
+        
+        if let highScore = UserDefaults.standard.object(forKey: "highScore"){
+            highScoreLabel.text = "Highscore: \(highScore)"
+        } else {
+            highScore = 0
+            highScoreLabel.text = "Highscore: \(highScore)"
+        }
+
         
         pika1.isUserInteractionEnabled = true
         pika2.isUserInteractionEnabled = true
@@ -100,6 +109,12 @@ class ViewController: UIViewController {
             
             for pika in pikachuArray{
                 pika.isHidden = true
+            }
+            
+            if self.score > self.highScore {
+                self.highScore = self.score
+                highScoreLabel.text = "Highscore: \(self.highScore)"
+                UserDefaults.standard.set(self.highScore, forKey: "highScore")
             }
             
             let alert = UIAlertController(title: "Time is Up", message: "Do you want to play again?", preferredStyle: .alert)
