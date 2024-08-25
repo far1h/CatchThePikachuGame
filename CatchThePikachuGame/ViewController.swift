@@ -104,9 +104,18 @@ class ViewController: UIViewController {
             
             let alert = UIAlertController(title: "Time is Up", message: "Do you want to play again?", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "OK", style: .cancel)
+            
             let replayButton = UIAlertAction(title: "Replay", style: .default) { UIAlertAction in
-                 
+                
+                self.score = 0
+                self.scoreLabel.text = "Score: \(self.score)"
+                self.count = 10
+                self.timeLabel.text = String(self.count)
+                
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: true)
+                self.hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.hidePikachu), userInfo: nil, repeats: true)
             }
+            
             alert.addAction(okButton)
             alert.addAction(replayButton)
             self.present(alert, animated: true, completion: nil)
